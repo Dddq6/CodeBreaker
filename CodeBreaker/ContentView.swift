@@ -7,36 +7,30 @@
 
 import SwiftUI
 
-//struct ContentView: View {
-//    var body: some View {
-//        VStack {
-//            Image(systemName: "globe")
-//                .font(.largeTitle)
-//            Text("Welcome to CS193p!")
-//                .font(.largeTitle)
-//                .foregroundStyle(.blue)
-//            Text("parz")
-//            Circle()
-//                .font(.largeTitle)
-//        }
-//    }
-//}
-
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-            Text("Welcome to CS193p!")
-                .padding()
-                .background(.yellow)
-                .foregroundStyle(.blue)
-//                .padding()
-            Text("parz")
-            Circle()
+        VStack{
+            HStack{
+                Circle().foregroundStyle(.red)
+                Circle().foregroundStyle(.green)
+                Circle().foregroundStyle(.green)
+                Circle().foregroundStyle(.yellow)
+            }
+            HStack{
+                Circle().foregroundStyle(.red)
+                Circle().foregroundStyle(.yellow)
+                Circle().foregroundStyle(.green)
+                Circle().foregroundStyle(.yellow)
+            }
+            HStack{
+                Circle().foregroundStyle(.red)
+                Circle().foregroundStyle(.green)
+                Circle().foregroundStyle(.red)
+                Circle().foregroundStyle(.yellow)
+            }
+            
         }
-        .font(.largeTitle)
         .padding()
-        .foregroundStyle(.green)
     }
 }
 
