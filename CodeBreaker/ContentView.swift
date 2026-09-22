@@ -9,38 +9,35 @@ import SwiftUI
 
 //struct ContentView: View {
 //    var body: some View {
-//        VStack(alignment:.leading, spacing: 1, content: greeting)
-//    }
-//    
-//    @ViewBuilder
-////    func greeting() -> TupleView<(Image,Text,Circle)> {
-//    func greeting() -> some View{
-//        Image(systemName: "globe")
-//        if true {
-//            Text("greetings!")
-//
+//        VStack {
+//            Image(systemName: "globe")
+//                .font(.largeTitle)
+//            Text("Welcome to CS193p!")
+//                .font(.largeTitle)
+//                .foregroundStyle(.blue)
+//            Text("parz")
+//            Circle()
+//                .font(.largeTitle)
 //        }
-//        Text("parz")
-//        Circle()
 //    }
 //}
 
-
 struct ContentView: View {
     var body: some View {
-//        VStack(alignment:.leading, spacing: 1, content: {
-        //and also can delete the content:,and rest of that
         VStack {
             Image(systemName: "globe")
-            if true {
-                Text("greetings!")
-                
-            }
+            Text("Welcome to CS193p!")
+                .padding()
+                .background(.yellow)
+                .foregroundStyle(.blue)
+//                .padding()
             Text("parz")
             Circle()
         }
+        .font(.largeTitle)
+        .padding()
+        .foregroundStyle(.green)
     }
-    
 }
 
 #Preview {
