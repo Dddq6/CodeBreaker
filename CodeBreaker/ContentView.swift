@@ -17,33 +17,24 @@ struct ContentView: View {
         .padding()
     }
     
-    //    var pegs: some View {
-    //        HStack{
-    //            Circle().foregroundStyle(.red)
-    //            Circle().foregroundStyle(.green)
-    //            Circle().foregroundStyle(.green)
-    //            Circle().foregroundStyle(.yellow)
-    //        }
-    //    }
     
     func pegs(colors: Array<Color>) -> some View {
-        //        HStack{
-        //            Circle().foregroundStyle(colors[0])
-        //            Circle().foregroundStyle(colors[1])
-        //            if colors.count > 2 {
-        //                Circle().foregroundStyle(colors[2])
-        //                if colors.count > 3 {
-        //                    Circle().foregroundStyle(colors[3])
-        //                }
-        //            }
-        //        }
         HStack{
             ForEach(colors.indices, id: \.self) { index in
-                Circle().foregroundStyle(colors[index])
+//                Circle().foregroundStyle(colors[index])
+                RoundedRectangle(cornerRadius: 10)
+                    .aspectRatio(1, contentMode: .fit)
+                //even though idk what is the meaning of this shape,,
+                    .foregroundStyle(colors[index])
             }
+            
+            MatchMaker(matches: [.exact, .nomatch, .inexact, .exact])
         }
     }
 }
+
+
+
 
 #Preview {
     ContentView()
