@@ -19,17 +19,29 @@ struct MatchMaker: View {
     var body: some View {
         HStack{
             VStack{
-                Circle().fill(Color.green)
-//                Circle().stroke(style: .init())
-//                Circle().stroke(Color.primary, lineWidth: 3)
-                //it'll be kind of spilling out
-                Circle().strokeBorder(Color.primary, lineWidth: 3).aspectRatio(1,contentMode: .fit)
+                matchMarker(peg: 0)
+                matchMarker(peg: 1)
             }
             VStack{
-                Circle()
-                Circle().opacity(0)
+                matchMarker(peg: 2)
+                matchMarker(peg: 3)
             }
         }
+    }
+    
+    func matchMarker(peg: Int) -> some View {
+        let exactCount = matches.count(where: {match in match == .exact})
+        let foundCount: Int = matches.count(where: {match in match != .nomatch})
+        return Circle()
+            .fill(exactCount > peg ? Color.primary : Color.clear)
+            .strokeBorder(foundCount > peg ? Color.primary : Color.clear, lineWidth: 2)
+            .aspectRatio(1, contentMode: .fit)
+    }
+    
+    func isExact(match: Match) -> Bool {
+        //return match == Match.exact
+        match == .exact
+        //the single line of func and remove "Match": can clearly infer
     }
 }
 

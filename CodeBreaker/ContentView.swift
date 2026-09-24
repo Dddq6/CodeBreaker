@@ -21,10 +21,8 @@ struct ContentView: View {
     func pegs(colors: Array<Color>) -> some View {
         HStack{
             ForEach(colors.indices, id: \.self) { index in
-//                Circle().foregroundStyle(colors[index])
                 RoundedRectangle(cornerRadius: 10)
                     .aspectRatio(1, contentMode: .fit)
-                //even though idk what is the meaning of this shape,,
                     .foregroundStyle(colors[index])
             }
             
