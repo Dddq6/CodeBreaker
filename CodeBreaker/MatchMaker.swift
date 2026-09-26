@@ -30,19 +30,31 @@ struct MatchMaker: View {
     }
     
     func matchMarker(peg: Int) -> some View {
-        let exactCount = matches.count(where: {match in match == .exact})
-        let foundCount: Int = matches.count(where: {match in match != .nomatch})
+//        let exactCount = matches.count(where: isExact)
+        
+//        let exactCount = matches.count(where: { (match: Match) -> Bool in
+//            match == .exact
+//        })
+        
+//        let exactCount = matches.count(where: { match in
+//            match == .exact
+//        })
+        
+//        let exactCount = matches.count { match in
+//            match == .exact
+//        }//Trailing Closure Syntax
+            
+        //how many are exact? exactCount= 完全匹配数
+        let exactCount = matches.count { $0 == .exact }
+        //how many are not no-match? foundCount = 找到的数 = exact + inexact
+        let foundCount = matches.count { $0 != .nomatch }
         return Circle()
+        //primary is the color that regular and clear is transparent
             .fill(exactCount > peg ? Color.primary : Color.clear)
             .strokeBorder(foundCount > peg ? Color.primary : Color.clear, lineWidth: 2)
             .aspectRatio(1, contentMode: .fit)
     }
-    
-    func isExact(match: Match) -> Bool {
-        //return match == Match.exact
-        match == .exact
-        //the single line of func and remove "Match": can clearly infer
-    }
+    //func isExact
 }
 
 #Preview {
