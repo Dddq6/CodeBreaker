@@ -33,16 +33,23 @@ struct CodeBreaker {
             let newPeg = pegChoices[(indexOfExistingPegInPegChoices + 1) % pegChoices.count]
             guess.pegs[index] = newPeg
         } else {
-            guess.pegs[index] = pegChoices.first ?? Code.missing
+            guess.pegs[index] = pegChoices.first ?? Code.missingPeg
         }
     }
 }
 
+//adds new functionality to an existing type
+extension Peg {
+    static let missing = Color.clear
+}
+
 struct Code {
     var kind: Kind
-    var pegs: [Peg] = Array(repeating: Code.missing, count: 4)
+//    var pegs: [Peg] = Array(repeating: Code.missingPeg, count: 4)
+    var pegs: [Peg] = Array(repeating: Peg.missing, count: 4)
+
     
-    static let missing = Peg.clear
+    static let missingPeg = Peg.clear
     
     enum Kind: Equatable {
         case master
@@ -53,7 +60,7 @@ struct Code {
     
     mutating func randomize(from pegChoices: [Peg]) {
         for index in pegChoices.indices {
-            pegs[index] = pegChoices.randomElement() ?? Code.missing
+            pegs[index] = pegChoices.randomElement() ?? Code.missingPeg
         }
     }
     
@@ -65,34 +72,51 @@ struct Code {
     }
     
     func match(against otherCode: Code) -> [Match] {
-        //init all result is nomatch
-        var results: [Match] = Array(repeating: .nomatch, count: pegs.count)
-        //copy that and do something
+        //        var results: [Match] = Array(repeating: .nomatch, count: pegs.count)
         var pegsToMatch = otherCode.pegs
-
-        //reversed()cuz it promised not chaos of index
-        for index in pegs.indices.reversed() {
-            //count always 1 more than index cuz it comes from 0
+        
+        //functional programming function
+        //"I'm transforming every index into a Match, and map builds the result array for me."
+        
+//        let exactMatches = pegs.indices.reversed().map() { index in
+        let backwardsMatches = pegs.indices.reversed().map() { index in
             if pegsToMatch.count > index, pegsToMatch[index] == pegs[index] {
-                //let results matches the pegs
-                results[index] = .exact
-                //remove the candidiate
                 pegsToMatch.remove(at: index)
+                return Match.exact
+            } else {
+                return .nomatch
             }
         }
-
-        for index in pegs.indices {
-            //find the other inexact
-            if results[index] != .exact {
-                //find the first index of the the same color of pegs
-                if let matchIndex = pegsToMatch.firstIndex(of: pegs[index]) {
-                    results[index] = .inexact
-                    pegsToMatch.remove(at: matchIndex)
-                }
+        
+        //"I'm going through the array and manually modifying results."
+        //        for index in pegs.indices.reversed() {
+        //            if pegsToMatch.count > index, pegsToMatch[index] == pegs[index] {
+        //                results[index] = .exact
+        //                pegsToMatch.remove(at: index)
+        //            }
+        //        }
+        
+        let exactMatches = Array(backwardsMatches.reversed())
+        
+        return pegs.indices.map { index in
+            if exactMatches[index] != .exact, let matchIndex = pegsToMatch.firstIndex(of: pegs[index]) {
+                pegsToMatch.remove(at: matchIndex)
+                return .inexact
+            } else {
+                return exactMatches[index]
             }
         }
-
-        return results
+        
+        //        for index in pegs.indices {
+        //            if results[index] != .exact {
+        //                if let matchIndex = pegsToMatch.firstIndex(of: pegs[index]) {
+        //                    results[index] = .inexact
+        //                    pegsToMatch.remove(at: matchIndex)
+        //                }
+        //            }
+        //        }
+        //
+        //        return results
     }
 }
 
