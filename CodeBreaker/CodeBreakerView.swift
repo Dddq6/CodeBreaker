@@ -60,10 +60,15 @@ struct CodeBreakerView: View {
                     }
             }
             
-            MatchMaker(matches: code.matches)
-                .overlay {
-                    if code.kind == .guess{
-                        guessButton
+            Rectangle().foregroundStyle(Color.clear).aspectRatio(1, contentMode: .fit)
+                .overlay() {
+                    if let matches = code.matches {
+                        //            MatchMaker(matches: code.matches)
+                        MatchMaker(matches: matches)
+                    } else {
+                        if code.kind == .guess{
+                            guessButton
+                        }
                     }
                 }
         }

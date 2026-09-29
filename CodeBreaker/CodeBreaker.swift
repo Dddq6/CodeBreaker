@@ -7,12 +7,11 @@
 
 import SwiftUI
 
-typealias Peg = Color //sematic naming
+typealias Peg = Color
 
 struct CodeBreaker {
-    var masterCode: Code = Code(kind: .master)//default and it's gonna have some arguement
+    var masterCode: Code = Code(kind: .master)
     var guess: Code = Code(kind: .guess)
-//    var attempts: [Code] = [Code]() //it could be crushed if there is nothing
     var attempts: [Code] = []
     let pegChoices: [Peg]
     
@@ -28,16 +27,12 @@ struct CodeBreaker {
         attempts.append(attempt)
     }
     
-
-//    func changeGuessPeg(at: index = Int) {
     mutating func changeGuessPeg(at index: Int) {
         let existingPeg = guess.pegs[index]
         if let indexOfExistingPegInPegChoices = pegChoices.firstIndex(of: existingPeg) {
-            //%:if it's the last one like (3+1=4)%4=0 not 4 cuz it'll gonna crash
             let newPeg = pegChoices[(indexOfExistingPegInPegChoices + 1) % pegChoices.count]
             guess.pegs[index] = newPeg
         } else {
-            //?? means nil-coalescing operator n Code.missing means fallback value
             guess.pegs[index] = pegChoices.first ?? Code.missing
         }
     }
@@ -45,16 +40,14 @@ struct CodeBreaker {
 
 struct Code {
     var kind: Kind
-    /*var pegs: [Peg] = [.green, .red, .yellow, .blue]*/ //four Pegs made a Code
     var pegs: [Peg] = Array(repeating: Code.missing, count: 4)
     
-    //static let missing: Peg = .clear this is the tc write
     static let missing = Peg.clear
-    //Which is the this types?(which is the "Kind" of Code is it?
+    
     enum Kind: Equatable {
-        case master//Got to hide this Pegs
-        case guess//editibal Code cuz im guessing
-        case attempts([Match])//non-editibal Code, but i can see the previous attempts ive made
+        case master
+        case guess
+        case attempts([Match])
         case unknown
     }
     
@@ -64,26 +57,34 @@ struct Code {
         }
     }
     
-    var matches: [Match] {
+    var matches: [Match]? {
         switch kind {
         case .attempts(let matches): return matches
-        default: return []
+        default: return nil
         }
     }
     
     func match(against otherCode: Code) -> [Match] {
+        //init all result is nomatch
         var results: [Match] = Array(repeating: .nomatch, count: pegs.count)
+        //copy that and do something
         var pegsToMatch = otherCode.pegs
 
+        //reversed()cuz it promised not chaos of index
         for index in pegs.indices.reversed() {
+            //count always 1 more than index cuz it comes from 0
             if pegsToMatch.count > index, pegsToMatch[index] == pegs[index] {
+                //let results matches the pegs
                 results[index] = .exact
+                //remove the candidiate
                 pegsToMatch.remove(at: index)
             }
         }
 
         for index in pegs.indices {
+            //find the other inexact
             if results[index] != .exact {
+                //find the first index of the the same color of pegs
                 if let matchIndex = pegsToMatch.firstIndex(of: pegs[index]) {
                     results[index] = .inexact
                     pegsToMatch.remove(at: matchIndex)
@@ -94,9 +95,4 @@ struct Code {
         return results
     }
 }
-
-//struct Peg {
-//    var color: Color
-//}->typealias
-
 
