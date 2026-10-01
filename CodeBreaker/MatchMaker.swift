@@ -15,7 +15,10 @@ enum Match {
 
 //"helicopter" View("bag of lego")
 struct MatchMaker: View {
+    //MARK: Data in
     var matches: [Match]//this is the same as Array<Match>
+    
+    //MARK: - Body
     var body: some View {
         HStack{
             VStack{
