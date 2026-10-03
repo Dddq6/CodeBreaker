@@ -14,21 +14,33 @@ struct CodeBreaker {
     var guess: Code = Code(kind: .guess)
     var attempts: [Code] = []
     let pegChoices: [Peg] //Set<Peg>
+    var startTime: Date = .now
+    var endTime: Date?
     
     init(pegChoices: [Peg] = [.red, .green, .blue, .yellow]) {
         self.pegChoices = pegChoices
         masterCode.randomize(from: pegChoices)
-        print(masterCode)
     }
+    
     var isOver: Bool {
         attempts.last?.pegs == masterCode.pegs
     }
+    
+    mutating func restart() {
+        masterCode.kind = .master(isHidden: true)
+        masterCode.randomize(from: pegChoices)
+        guess.reset()
+        attempts.removeAll()
+        endTime = nil
+    }
+    
     mutating func attemptGuess() {
         var attempt = guess
         attempt.kind = .attempts(guess.match(against: masterCode))
         attempts.append(attempt)
         guess.reset()
         if isOver {
+            endTime = .now
             masterCode.kind = .master(isHidden: false)
         }
     }
