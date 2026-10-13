@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct pegChooser: View {
+struct PegChooser: View {
     //MARK: Data In
     let choices: [Peg]
     //MARK: Data Out Function
-    let onChoices: ((Peg) -> Void)?
+    var onChoices: ((Peg) -> Void)?
     
 //    @Binding var game: CodeBreaker
 //    @Binding var selection: Int
