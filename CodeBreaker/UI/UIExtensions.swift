@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-    func flexibleSystemFont(minimun: CGFloat = 8, maximun: CGFloat = 80) -> some View{
+    func flexibleSystemFont(minimun: CGFloat = 8, maximun: CGFloat = 70) -> some View{
         self
             .font(.system(size: maximun))
             .minimumScaleFactor(minimun/maximun)

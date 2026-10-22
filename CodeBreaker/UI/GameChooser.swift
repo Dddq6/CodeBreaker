@@ -8,65 +8,26 @@
 import SwiftUI
 
 struct GameChooser: View {
-    //MARK: Data Owned by Me
-    @State private var games: [CodeBreaker] = []
+    
+    @State private var selection: CodeBreaker? = nil
     
     //MARK: Body
     var body: some View {
-        NavigationStack {
-            List{
-                ForEach(games) { game in
-//                    NavigationLink {
-//                        CodeBreakerView(game: game)
-//                    } label: {
-//                        GameSummary(game: game)
-//                    }
-                    NavigationLink(value: game) {
-                        GameSummary(game: game)
-                    }
-                    NavigationLink(value: game.masterCode.pegs) {
-                        Text("cheat")
-                    }
-                }
-                .onDelete { offsets in
-                    games.remove(atOffsets: offsets)
-                }
-                .onMove { offsets, destination in
-                    games.move(fromOffsets: offsets, toOffset: destination)
-                    
-                }
+//        NavigationStack {
+        NavigationSplitView {
+            GameList(selection: $selection)
+                .navigationTitle("Code Breaker")
+        } detail: {
+            if let selection {
+                CodeBreakerView(game: selection)
+                    .navigationTitle(selection.name)
+                    .navigationBarTitleDisplayMode(.inline)
+            } else {
+                Text("Choose a game!")
             }
-            .navigationDestination(for: CodeBreaker.self) { game in
-                CodeBreakerView(game: game)
-            }
-            .navigationDestination(for: [Peg].self) { pegs in
-                PegChooser(choices: pegs)
-            }
-            .listStyle(.plain)
-            .toolbar {
-                EditButton()
-            }
-//        List{
-//            Section("Games"){
-//                ForEach(game, id: \.pegChoices) { game in
-//                    GameSummary(game: game)
-//                }
-//            }
-//            Section(header: Image(systemName: "face.smiling")) {
-//                Text("Hello")
-//                Text("There")
-//            }
-            
-//            .listRowSeparator(.hidden)
-//            .listRowBackground(RoundedRectangle(cornerRadius: 10).foregroundStyle(.yellow).padding(5))
         }
+//        .navigationSplitViewStyle(.balanced)
         
-        .onAppear{
-            games.append(CodeBreaker(name: "Mastermind", pegChoices: [.red, .blue, .green, .yellow]))
-            games.append(CodeBreaker(name: "Earth Tones", pegChoices: [.brown, .gray, .green, .cyan, .yellow]))
-            games.append(CodeBreaker(name: "Undersea", pegChoices: [.indigo, .blue, .cyan]))
-
-        }
     }
 }
 

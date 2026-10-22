@@ -15,7 +15,8 @@ typealias Peg = Color
     var masterCode: Code = Code(kind: .master(isHidden: true))
     var guess: Code = Code(kind: .guess)
     var attempts: [Code] = []
-    let pegChoices: [Peg] //Set<Peg>
+//    let pegChoices: [Peg] //Set<Peg>
+    var pegChoices: [Peg] //cuz GameEditor
     var startTime: Date = .now
     var endTime: Date?
     

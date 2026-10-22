@@ -51,6 +51,7 @@ struct CodeBreakerView: View {
                     //.transition(.move(edge: .bottom))
 //                    .transition(AnyTransition.offset(x: 0, y: 200))
                     .transition(.pegChooser)
+                    .frame(maxHeight: 90)
             }
         }
         .toolbar {
