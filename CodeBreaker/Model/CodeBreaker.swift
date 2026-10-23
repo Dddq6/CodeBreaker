@@ -17,13 +17,27 @@ typealias Peg = Color
     var attempts: [Code] = []
 //    let pegChoices: [Peg] //Set<Peg>
     var pegChoices: [Peg] //cuz GameEditor
-    var startTime: Date = .now
+    var startTime: Date?
     var endTime: Date?
+    var elapsedTime: TimeInterval = 0
     
     init(name: String = "Code Breaker", pegChoices: [Peg] = [.red, .green, .blue, .yellow]) {
         self.name = name
         self.pegChoices = pegChoices
         masterCode.randomize(from: pegChoices)
+    }
+    
+    func startTimer() {
+        if startTime == nil, !isOver {
+            startTime = .now
+            
+        }
+    }
+    func pauseTimer() {
+        if let startTime {
+            elapsedTime += Date.now.timeIntervalSince(startTime)
+        }
+        startTime = nil
     }
     
     var isOver: Bool {
@@ -36,6 +50,7 @@ typealias Peg = Color
         guess.reset()
         attempts.removeAll()
         endTime = nil
+        elapsedTime = 0
     }
     
     func attemptGuess() {
@@ -48,6 +63,7 @@ typealias Peg = Color
         if isOver {
             endTime = .now
             masterCode.kind = .master(isHidden: false)
+            pauseTimer()
         }
     }
     
